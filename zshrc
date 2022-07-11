@@ -117,3 +117,9 @@ fpath+=($ZSH_CUSTOM/themes/pure)
 autoload -U promptinit; promptinit
 prompt pure
 export LC_ALL=C.UTF-8
+
+if [[ -d $HOME/.vcpkg ]]; then
+   autoload bashcompinit
+   bashcompinit
+   source $HOME/.vcpkg/scripts/vcpkg_completion.zsh
+fi
