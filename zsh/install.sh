@@ -15,7 +15,7 @@ if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
     install_via_git_if_not_present "zsh-autosuggestions" https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM}/plugins/zsh-autosuggestions"
     install_via_git_if_not_present "zsh-pure-theme" https://github.com/sindresorhus/pure.git "${ZSH_CUSTOM}/themes/pure"
 
-    link_backup_if_present_unlink_if_symlink "$DOTFILES/zshrc" "$HOME/.zshrc"
+    link_backup_if_present_unlink_if_symlink_unless_same "$DOTFILES/zshrc" "$HOME/.zshrc"
 else
     echo "oh-my-zsh already installed, skipping"    
 fi

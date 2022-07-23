@@ -22,18 +22,27 @@ install_via_git_if_not_present() {
     fi
 }
 
-link_backup_if_present_unlink_if_symlink() {
+link_backup_if_present_unlink_if_symlink_unless_same() {
     typeset -r src="$1"
     typeset -r tgt="$2"
 
-    if [[ -f "$tgt" ]]; then
-        echo "Backing up $tgt to ${tgt}.bak"
-        mv "$tgt" "${tgt}.bak"
-    fi
-
-    if [[ -h "$tgt" ]]; then
-        echo "Target $tgt is a symlink removing"
-        rm "$tgt"
+    if [[ -L "$tgt" ]]; then
+        if [[ "$(readlink "$tgt")" == "$src" ]]; then
+            echo "Skipping $tgt, already linked to $src"
+            return
+        else
+            echo "Target $tgt is a symlink removing"
+            rm "$tgt"
+        fi
+    elif [[ -f "$tgt" ]]; then
+        diff -q "$src" "$tgt"
+        if [[ $? -eq 0 ]]; then
+            echo "Skipping $tgt, already same as $src"
+            return
+        else
+            echo "Backing up $tgt to ${tgt}.bak"
+            mv "$tgt" "${tgt}.bak"
+        fi
     fi
 
     echo "Symlinking $src to $tgt"

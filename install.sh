@@ -9,6 +9,6 @@ export DOTFILES="$(pwd -P)"
 check_for_commands git wget curl screen tmux
 
 # Install all submodules
-for install_file in $(find "${DOTFILES}/*/" -name install.sh); do
+for install_file in $(find "${DOTFILES}"/*/ -name install.sh); do
     "$install_file"
 done
